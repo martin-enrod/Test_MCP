@@ -1,4 +1,5 @@
 import logging
+import time
 
 from prefab_ui.app import PrefabApp
 from prefab_ui.components import Column, Heading, Text, Badge, Row
@@ -57,6 +58,15 @@ def search_products_implementation(query: str, category: str | None = None) -> l
     # Implementation...
     logger.info(f"Searching for '{query}' in category '{category}'")
     return [{"id": 2, "name": "Another Product"}]
+
+@mcp.tool(
+    name="sleep",
+    description="Sleep some 2 seconds and return your number multiplied by 2.",
+)
+def slow_tool(x: int) -> int:
+    """This sync function won't block other concurrent requests."""
+    time.sleep(2)  # Runs in threadpool, not on the event loop
+    return x * 2
 
 if __name__ == "__main__":
     mcp.run()
